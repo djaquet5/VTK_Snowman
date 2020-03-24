@@ -15,8 +15,8 @@ def getSphereActor(posX, radius):
     sphere = vtk.vtkSphereSource()
     sphere.SetCenter(posX, 0, 0)
     sphere.SetRadius(radius)
-    sphere.SetPhiResolution(40)
-    sphere.SetThetaResolution(40)
+    sphere.SetPhiResolution(50)
+    sphere.SetThetaResolution(50)
 
     mapper = vtk.vtkPolyDataMapper()
     mapper.SetInputConnection(sphere.GetOutputPort())
@@ -57,9 +57,21 @@ renWin = vtk.vtkRenderWindow()
 renWin.AddRenderer(renderer)
 renWin.SetSize(600, 600)
 
-for i in range(0, 360):
+# Align the head with the body
+for i in range(0, 180):
     time.sleep(0.03)
 
     renWin.Render()
-    # renderer.GetActiveCamera().Azimuth(1)
-    # head.GetProperty().SetPosition(head.GetProperty().)
+    head.RotateZ(-0.5)
+
+# Put the head on the body
+for i in range(0, 30):
+    time.sleep(0.03)
+
+    renWin.Render()
+
+    position = head.GetPosition()
+    head.SetPosition(position[0], position[1]-0.1, position[2])
+
+for i in range(0, 100):
+    time.sleep(0.03)
