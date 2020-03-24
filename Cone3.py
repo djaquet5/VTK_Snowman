@@ -15,16 +15,16 @@ import time
 # vtkPolyData) which other filters may process.
 #
 cone = vtk.vtkConeSource()
-cone.SetHeight( 3.0 )
-cone.SetRadius( 1.0 )
-cone.SetResolution( 10 )
+cone.SetHeight(3.0)
+cone.SetRadius(1.0)
+cone.SetResolution(100)
 
 #
 # In this example we terminate the pipeline with a mapper process object.
 # (Intermediate filters such as vtkShrinkPolyData could be inserted in
 # between the source and the mapper.)  We create an instance of
 # vtkPolyDataMapper to map the polygonal data into graphics primitives. We
-# connect the output of the cone souece to the input of this mapper.
+# connect the output of the cone source to the input of this mapper.
 #
 coneMapper = vtk.vtkPolyDataMapper()
 coneMapper.SetInputConnection(cone.GetOutputPort())
@@ -62,8 +62,8 @@ ren2.SetViewport(0.5, 0.0, 1.0, 1.0)
 # set the size to be 600 pixels by 300.
 #
 renWin = vtk.vtkRenderWindow()
-renWin.AddRenderer( ren1 )
-renWin.AddRenderer( ren2 )
+renWin.AddRenderer(ren1)
+renWin.AddRenderer(ren2)
 renWin.SetSize(600, 300)
 
 #
@@ -73,11 +73,11 @@ ren1.ResetCamera()
 ren1.GetActiveCamera().Azimuth(90)
 
 #
-# Now we loop over 360 degreeees and render the cone each time.
+# Now we loop over 360 degrees and render the cone each time.
 #
-for i in range(0,360):
+for i in range(0, 360):
     time.sleep(0.03)
 
     renWin.Render()
-    ren1.GetActiveCamera().Azimuth( 1 )
-    ren2.GetActiveCamera().Azimuth( 1 )
+    ren1.GetActiveCamera().Azimuth(1)
+    ren2.GetActiveCamera().Azimuth(1)

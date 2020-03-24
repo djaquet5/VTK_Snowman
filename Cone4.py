@@ -14,17 +14,17 @@ import time
 # pipeline (it is a source process object); it produces data (output type is
 # vtkPolyData) which other filters may process.
 #
-cone = vtk.vtkConeSource ()
-cone.SetHeight( 3.0 )
-cone.SetRadius( 1.0 )
-cone.SetResolution( 10 )
+cone = vtk.vtkConeSource()
+cone.SetHeight(3.0)
+cone.SetRadius(1.0)
+cone.SetResolution(100)
 
 #
 # In this example we terminate the pipeline with a mapper process object.
 # (Intermediate filters such as vtkShrinkPolyData could be inserted in
 # between the source and the mapper.)  We create an instance of
 # vtkPolyDataMapper to map the polygonal data into graphics primitives. We
-# connect the output of the cone souece to the input of this mapper.
+# connect the output of the cone source to the input of this mapper.
 #
 coneMapper = vtk.vtkPolyDataMapper()
 coneMapper.SetInputConnection(cone.GetOutputPort())
@@ -32,7 +32,7 @@ coneMapper.SetInputConnection(cone.GetOutputPort())
 #
 # Create an actor to represent the first cone. The actor's properties are
 # modified to give it different surface properties. By default, an actor
-# is create with a property so the GetProperty() method can be used.
+# is created with a property so the GetProperty() method can be used.
 #
 coneActor = vtk.vtkActor()
 coneActor.SetMapper(coneMapper)
@@ -56,7 +56,7 @@ property.SetSpecularPower(20)
 # manipulated and then assigned to the actor. In this way, a single
 # property can be shared among many actors. Note also that we use the
 # same mapper as the first actor did. This way we avoid duplicating
-# geometry, which may save lots of memory if the geoemtry is large.
+# geometry, which may save lots of memory if the geometry is large.
 coneActor2 = vtk.vtkActor()
 coneActor2.SetMapper(coneMapper)
 coneActor2.GetProperty().SetColor(0.2, 0.63, 0.79)
@@ -83,11 +83,10 @@ renWin.AddRenderer(ren1)
 renWin.SetSize(300, 300)
 
 #
-# Now we loop over 360 degreeees and render the cone each time.
+# Now we loop over 360 degrees and render the cone each time.
 #
-for i in range(0,360):
+for i in range(0, 360):
     time.sleep(0.03)
 
     renWin.Render()
-    ren1.GetActiveCamera().Azimuth( 1 )
-
+    ren1.GetActiveCamera().Azimuth(1)
