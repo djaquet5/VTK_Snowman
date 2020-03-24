@@ -62,4 +62,4 @@ for i in range(0, 360):
 
     renWin.Render()
     # renderer.GetActiveCamera().Azimuth(1)
-    head.GetProperty().SetPosition(head.GetProperty().)
+    # head.GetProperty().SetPosition(head.GetProperty().)
