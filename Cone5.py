@@ -16,16 +16,16 @@ import vtk
 # vtkPolyData) which other filters may process.
 #
 cone = vtk.vtkConeSource()
-cone.SetHeight( 3.0 )
-cone.SetRadius( 1.0 )
-cone.SetResolution( 10 )
+cone.SetHeight(3.0)
+cone.SetRadius(1.0)
+cone.SetResolution(10)
 
 #
 # In this example we terminate the pipeline with a mapper process object.
 # (Intermediate filters such as vtkShrinkPolyData could be inserted in
 # between the source and the mapper.)  We create an instance of
 # vtkPolyDataMapper to map the polygonal data into graphics primitives. We
-# connect the output of the cone souece to the input of this mapper.
+# connect the output of the cone source to the input of this mapper.
 #
 coneMapper = vtk.vtkPolyDataMapper()
 coneMapper.SetInputConnection(cone.GetOutputPort())
@@ -70,7 +70,7 @@ iren.SetRenderWindow(renWin)
 # By default the vtkRenderWindowInteractor instantiates an instance
 # of vtkInteractorStyle. vtkInteractorStyle translates a set of events
 # it observes into operations on the camera, actors, and/or properties
-# in the vtkRenderWindow associated with the vtkRenderWinodwInteractor.
+# in the vtkRenderWindow associated with the vtkRenderWindowInteractor.
 # Here we specify a particular interactor style.
 style = vtk.vtkInteractorStyleTrackballCamera()
 iren.SetInteractorStyle(style)

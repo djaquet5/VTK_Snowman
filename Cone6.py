@@ -23,7 +23,7 @@ import vtk
 cone = vtk.vtkConeSource()
 cone.SetHeight(3.0)
 cone.SetRadius(1.0)
-cone.SetResolution(10)
+cone.SetResolution(100)
 
 # In this example we terminate the pipeline with a mapper process object.
 # (Intermediate filters such as vtkShrinkPolyData could be inserted in
@@ -71,7 +71,6 @@ iren.SetRenderWindow(renWin)
 style = vtk.vtkInteractorStyleTrackballCamera()
 iren.SetInteractorStyle(style)
 
-
 # Here we use a vtkBoxWidget to transform the underlying coneActor (by
 # manipulating its transformation matrix). Many other types of widgets
 # are available for use, see the documentation for more details.
@@ -90,6 +89,7 @@ boxWidget.SetPlaceFactor(1.25)
 # observed which invokes the SelectPolygons callback.
 boxWidget.SetProp3D(coneActor)
 boxWidget.PlaceWidget()
+
 
 # Similar to Step2/Python/Cone2.py, we define a callback for
 # interaction.  As can be seen the callback takes two arguments.  The

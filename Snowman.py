@@ -1,3 +1,11 @@
+"""
+Lab: 1-Snowman
+Authors: David Jaquet, Luc Wachter
+Description: Reproduce the video at the following link using VTK and its python wrapper
+             https://youtu.be/hthbXe_boXc
+Python version: 3.7.4
+"""
+
 import vtk
 import time
 
