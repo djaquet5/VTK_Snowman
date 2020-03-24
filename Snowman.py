@@ -1,33 +1,30 @@
 import vtk
 import time
 
-# Head
-head = vtk.vtkSphereSource()
-head.SetCenter(0, 0, 0)
-head.SetRadius(8.0)
-head.SetThetaResolution(50)
 
-headMapper = vtk.vtkPolyDataMapper()
-headMapper.SetInputConnection(head.GetOutputPort())
+# Generate an actor with a sphere shape
+def getSphereActor(posX, radius):
+    sphere = vtk.vtkSphereSource()
+    sphere.SetCenter(posX, 0, 0)
+    sphere.SetRadius(radius)
+    sphere.SetPhiResolution(40)
+    sphere.SetThetaResolution(40)
 
-headActor = vtk.vtkActor()
-headActor.SetMapper(headMapper)
+    mapper = vtk.vtkPolyDataMapper()
+    mapper.SetInputConnection(sphere.GetOutputPort())
 
-# Body
-body = vtk.vtkSphereSource()
-body.SetCenter(20, 0, 0)
-body.SetRadius(10.0)
-body.SetThetaResolution(50)
+    actor = vtk.vtkActor()
+    actor.SetMapper(mapper)
 
-bodyMapper = vtk.vtkPolyDataMapper()
-bodyMapper.SetInputConnection(body.GetOutputPort())
+    return actor
 
-bodyActor = vtk.vtkActor()
-bodyActor.SetMapper(bodyMapper)
+
+head = getSphereActor(-20, 8)
+body = getSphereActor(0, 10)
 
 # Nose
 nose = vtk.vtkConeSource()
-nose.SetCenter(40, 0, 0)
+nose.SetCenter(20, 0, 0)
 nose.SetHeight(3.0)
 nose.SetRadius(1.0)
 nose.SetResolution(50)
@@ -41,8 +38,8 @@ noseActor.GetProperty().SetColor(0.925, 0.65, 0)
 
 # Renderer
 renderer = vtk.vtkRenderer()
-renderer.AddActor(headActor)
-renderer.AddActor(bodyActor)
+renderer.AddActor(head)
+renderer.AddActor(body)
 renderer.AddActor(noseActor)
 
 # Color picked from the demo video
@@ -56,4 +53,5 @@ for i in range(0, 360):
     time.sleep(0.03)
 
     renWin.Render()
-    renderer.GetActiveCamera().Azimuth(1)
+    # renderer.GetActiveCamera().Azimuth(1)
+    head.GetProperty().SetPosition(head.GetProperty().)
