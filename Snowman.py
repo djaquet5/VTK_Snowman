@@ -32,7 +32,8 @@ body = getSphereActor(0, 10)
 
 # Nose
 nose = vtk.vtkConeSource()
-nose.SetCenter(20, 0, 0)
+nose.SetDirection(0, -90, 0)
+nose.SetCenter(28, 0, 0)
 nose.SetHeight(3.0)
 nose.SetRadius(1.0)
 nose.SetResolution(50)
@@ -73,5 +74,44 @@ for i in range(0, 30):
     position = head.GetPosition()
     head.SetPosition(position[0], position[1]-0.1, position[2])
 
-for i in range(0, 100):
+# TODO: Align the nose with the body
+# FIXME: Edit range, the nose disapear in front of camera
+# for i in range(0, 1000):
+#     time.sleep(0.03)
+#
+#     renWin.Render()
+#     noseActor.RotateY(-0.5)
+
+# TODO: Lift the nose (with Pitch ?)
+
+# TODO: Display nose and eyes
+
+# Roll the camera
+# TODO: Check if the lap is completed
+for i in range(0, 360):
     time.sleep(0.03)
+
+    renWin.Render()
+    renderer.GetActiveCamera().Roll(1)
+
+# Traveling around the snowman
+# TODO: Check if the lap is completed
+for i in range(0, 360):
+    time.sleep(0.03)
+
+    renWin.Render()
+    renderer.GetActiveCamera().Azimuth(1)
+
+# Lift the camera to see the snowman from above
+for i in range(0, 80):
+    time.sleep(0.03)
+
+    renWin.Render()
+    renderer.GetActiveCamera().Elevation(1)
+
+# Lower the camera to have the snowman in front of the camera
+for i in range(0, 80):
+    time.sleep(0.03)
+
+    renWin.Render()
+    renderer.GetActiveCamera().Elevation(-1)
