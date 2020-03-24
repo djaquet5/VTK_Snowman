@@ -58,14 +58,20 @@ renWin = vtk.vtkRenderWindow()
 renWin.AddRenderer(renderer)
 renWin.SetSize(600, 600)
 
-# Align the head with the body
-for i in range(0, 180):
-    time.sleep(0.03)
 
-    renWin.Render()
-    head.RotateZ(-0.5)
+def displayLoop(rangeEnd, displayFunc, value):
+    for i in range(0, rangeEnd):
+        time.sleep(0.03)
+
+        renWin.Render()
+        displayFunc(value)
+
+
+# Align the head with the body
+displayLoop(180, head.RotateZ, -0.5)
 
 # Put the head on the body
+# TODO: Use display loop ?
 for i in range(0, 30):
     time.sleep(0.03)
 
@@ -88,30 +94,13 @@ for i in range(0, 30):
 
 # Roll the camera
 # TODO: Check if the lap is completed
-for i in range(0, 360):
-    time.sleep(0.03)
-
-    renWin.Render()
-    renderer.GetActiveCamera().Roll(1)
+displayLoop(360, renderer.GetActiveCamera().Roll, 1)
 
 # Traveling around the snowman
-# TODO: Check if the lap is completed
-for i in range(0, 360):
-    time.sleep(0.03)
-
-    renWin.Render()
-    renderer.GetActiveCamera().Azimuth(1)
+displayLoop(360, renderer.GetActiveCamera().Azimuth, 1)
 
 # Lift the camera to see the snowman from above
-for i in range(0, 80):
-    time.sleep(0.03)
-
-    renWin.Render()
-    renderer.GetActiveCamera().Elevation(1)
+displayLoop(80, renderer.GetActiveCamera().Elevation, 1)
 
 # Lower the camera to have the snowman in front of the camera
-for i in range(0, 80):
-    time.sleep(0.03)
-
-    renWin.Render()
-    renderer.GetActiveCamera().Elevation(-1)
+displayLoop(80, renderer.GetActiveCamera().Elevation, -1)
