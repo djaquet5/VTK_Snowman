@@ -12,9 +12,9 @@ import time
 
 # Generate an actor with a sphere shape
 def get_sphere_actor(pos, radius):
-    """Returns a sphere source at the position and of the size specified"""
+    """Returns a sphere actor at the position and of the size specified"""
     sphere = vtk.vtkSphereSource()
-    sphere.SetCenter(pos[0], pos[1], pos[2])
+    sphere.SetCenter(pos)
     sphere.SetRadius(radius)
     sphere.SetPhiResolution(50)
     sphere.SetThetaResolution(50)  # TODO: Different resolutions for different sizes
@@ -28,12 +28,13 @@ def get_sphere_actor(pos, radius):
     return actor
 
 
-def get_cone_actor():
+def get_cone_actor(center_position, height, radius):
+    """Returns a cone actor at the position and of the size specified"""
     cone = vtk.vtkConeSource()
     cone.SetDirection(0, -90, 0)
-    cone.SetCenter(28, 0, 0)
-    cone.SetHeight(3.0)
-    cone.SetRadius(1.0)
+    cone.SetCenter(center_position)
+    cone.SetHeight(height)
+    cone.SetRadius(radius)
     cone.SetResolution(50)
 
     mapper = vtk.vtkPolyDataMapper()
@@ -47,7 +48,7 @@ def get_cone_actor():
 
 def display_loop(range_end, display_func, value):
     """Executes a given display action for the given amount of frames"""
-    for i in range(0, range_end):
+    for _ in range(0, range_end):
         time.sleep(0.03)
 
         renWin.Render()
@@ -60,11 +61,12 @@ def lower_actor(actor, delta):
     actor.SetPosition(position[0], position[1] - delta, position[2])
 
 
+# Main instructions
 if __name__ == '__main__':
-    head = get_sphere_actor([-20, 0, 0], 8)
-    body = get_sphere_actor([0, 0, 0], 10)
+    head = get_sphere_actor([-20, 0, 0], radius=8)
+    body = get_sphere_actor([0, 0, 0], radius=10)
 
-    nose = get_cone_actor()
+    nose = get_cone_actor((28, 0, 0), height=3.0, radius=1.0)
     nose.GetProperty().SetColor(0.925, 0.65, 0)
 
     # Renderer
