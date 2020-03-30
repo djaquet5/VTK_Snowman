@@ -9,6 +9,8 @@ Python version: 3.7.4
 import vtk
 import time
 
+FRAME_TIME = 0.01
+
 
 # Generate an actor with a sphere shape
 def get_sphere_actor(pos, radius):
@@ -48,17 +50,23 @@ def get_cone_actor(center_position, height, radius):
 
 def display_loop(range_end, display_func, value):
     """Executes a given display action for the given amount of frames"""
-    for _ in range(0, range_end):
-        time.sleep(0.03)
+    for _ in range(range_end):
+        time.sleep(FRAME_TIME)
 
         renWin.Render()
         display_func(value)
 
 
-def lower_actor(actor, delta):
-    """Moves an actor down by delta"""
+def change_actor_y(actor, delta):
+    """Moves an actor up or down by delta"""
     position = actor.GetPosition()
-    actor.SetPosition(position[0], position[1] - delta, position[2])
+    actor.SetPosition(position[0], position[1] + delta, position[2])
+
+
+def raise_and_rotate_x(actor, delta_y, delta_rotate):
+    """Moves an actor up or down by delta and rotates it on the pitch axis"""
+    change_actor_y(actor, delta_y)
+    actor.RotateX(delta_rotate)
 
 
 # Main instructions
@@ -86,21 +94,14 @@ if __name__ == '__main__':
     display_loop(180, head.RotateZ, -0.5)
 
     # Lower the head onto the body
-    display_loop(30, lambda x: lower_actor(head, x), 0.1)
+    display_loop(30, lambda x: change_actor_y(head, x), -0.1)
 
     # TODO: Align the nose with the body
     # FIXME: Edit range, the nose disapear in front of camera
     # display_loop(1000, noseActor.RotateY, -0.5)
 
     # TODO: The nose should be inside the head
-    for i in range(0, 180):
-        time.sleep(0.03)
-
-        renWin.Render()
-
-        position = nose.GetPosition()
-        nose.SetPosition(position[0], position[1] + 0.1, position[2])
-        nose.RotateX(-0.4)
+    display_loop(180, lambda x: raise_and_rotate_x(nose, x, -0.4), 0.1)
 
     # FIXME: edit interval and increment
     # Pull out the nose
