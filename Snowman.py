@@ -28,6 +28,23 @@ def get_sphere_actor(pos, radius):
     return actor
 
 
+def get_cone_actor():
+    cone = vtk.vtkConeSource()
+    cone.SetDirection(0, -90, 0)
+    cone.SetCenter(28, 0, 0)
+    cone.SetHeight(3.0)
+    cone.SetRadius(1.0)
+    cone.SetResolution(50)
+
+    mapper = vtk.vtkPolyDataMapper()
+    mapper.SetInputConnection(cone.GetOutputPort())
+
+    actor = vtk.vtkActor()
+    actor.SetMapper(mapper)
+
+    return actor
+
+
 def display_loop(range_end, display_func, value):
     """Executes a given display action for the given amount of frames"""
     for i in range(0, range_end):
@@ -47,26 +64,14 @@ if __name__ == '__main__':
     head = get_sphere_actor([-20, 0, 0], 8)
     body = get_sphere_actor([0, 0, 0], 10)
 
-    # Nose
-    nose = vtk.vtkConeSource()
-    nose.SetDirection(0, -90, 0)
-    nose.SetCenter(28, 0, 0)
-    nose.SetHeight(3.0)
-    nose.SetRadius(1.0)
-    nose.SetResolution(50)
-
-    noseMapper = vtk.vtkPolyDataMapper()
-    noseMapper.SetInputConnection(nose.GetOutputPort())
-
-    noseActor = vtk.vtkActor()
-    noseActor.SetMapper(noseMapper)
-    noseActor.GetProperty().SetColor(0.925, 0.65, 0)
+    nose = get_cone_actor()
+    nose.GetProperty().SetColor(0.925, 0.65, 0)
 
     # Renderer
     renderer = vtk.vtkRenderer()
     renderer.AddActor(head)
     renderer.AddActor(body)
-    renderer.AddActor(noseActor)
+    renderer.AddActor(nose)
 
     # Color picked from the demo video
     renderer.SetBackground(1, 0.894, 0.898)
@@ -91,9 +96,9 @@ if __name__ == '__main__':
 
         renWin.Render()
 
-        position = noseActor.GetPosition()
-        noseActor.SetPosition(position[0], position[1] + 0.1, position[2])
-        noseActor.RotateX(-0.4)
+        position = nose.GetPosition()
+        nose.SetPosition(position[0], position[1] + 0.1, position[2])
+        nose.RotateX(-0.4)
 
     # FIXME: edit interval and increment
     # Pull out the nose
