@@ -77,11 +77,18 @@ if __name__ == '__main__':
     nose = get_cone_actor((28, 0, 0), height=3.0, radius=1.0)
     nose.GetProperty().SetColor(0.925, 0.65, 0)
 
+    # Camera
+    camera = vtk.vtkCamera()
+    camera.SetPosition(0, 0, 120)
+    camera.SetFocalPoint(0, 0, 0)
+
     # Renderer
     renderer = vtk.vtkRenderer()
     renderer.AddActor(head)
     renderer.AddActor(body)
     renderer.AddActor(nose)
+
+    renderer.SetActiveCamera(camera)
 
     # Color picked from the demo video
     renderer.SetBackground(1, 0.894, 0.898)
@@ -94,14 +101,13 @@ if __name__ == '__main__':
     display_loop(180, head.RotateZ, -0.5)
 
     # Lower the head onto the body
-    display_loop(30, lambda x: change_actor_y(head, x), -0.1)
+    display_loop(30, lambda delta: change_actor_y(head, delta), -0.1)
 
-    # TODO: Align the nose with the body
-    # FIXME: Edit range, the nose disapear in front of camera
-    # display_loop(1000, noseActor.RotateY, -0.5)
+    # Align the nose with the body
+    display_loop(180, nose.RotateY, -0.5)
 
     # TODO: The nose should be inside the head
-    display_loop(180, lambda x: raise_and_rotate_x(nose, x, -0.4), 0.1)
+    display_loop(120, lambda delta: raise_and_rotate_x(nose, delta, -0.4), 0.1)
 
     # FIXME: edit interval and increment
     # Pull out the nose
