@@ -16,7 +16,7 @@ def getSphereActor(pos, radius):
     sphere.SetCenter(pos[0], pos[1], pos[2])
     sphere.SetRadius(radius)
     sphere.SetPhiResolution(50)
-    sphere.SetThetaResolution(50)
+    sphere.SetThetaResolution(50)  # TODO: Different resolutions for different sizes
 
     mapper = vtk.vtkPolyDataMapper()
     mapper.SetInputConnection(sphere.GetOutputPort())
@@ -70,19 +70,18 @@ def displayLoop(rangeEnd, displayFunc, value):
 # Align the head with the body
 displayLoop(180, head.RotateZ, -0.5)
 
+
 # Put the head on the body
-# TODO: Use display loop ?
-for i in range(0, 30):
-    time.sleep(0.03)
-
-    renWin.Render()
-
+def lower_head(delta):
     position = head.GetPosition()
-    head.SetPosition(position[0], position[1]-0.1, position[2])
+    head.SetPosition(position[0], position[1] - delta, position[2])
+
+
+displayLoop(30, lower_head, 0.1)
 
 # TODO: Align the nose with the body
 # FIXME: Edit range, the nose disapear in front of camera
-# displayLoop(1000, noseActor.RotateY, -0.5)
+displayLoop(1000, noseActor.RotateY, -0.5)
 
 # TODO: The nose should be inside the head
 for i in range(0, 180):
@@ -91,7 +90,7 @@ for i in range(0, 180):
     renWin.Render()
 
     position = noseActor.GetPosition()
-    noseActor.SetPosition(position[0], position[1]+0.1, position[2])
+    noseActor.SetPosition(position[0], position[1] + 0.1, position[2])
     noseActor.RotateX(-0.4)
 
 # FIXME: edit interval and increment
