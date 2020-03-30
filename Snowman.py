@@ -11,7 +11,7 @@ import time
 
 
 # Generate an actor with a sphere shape
-def getSphereActor(pos, radius):
+def get_sphere_actor(pos, radius):
     sphere = vtk.vtkSphereSource()
     sphere.SetCenter(pos[0], pos[1], pos[2])
     sphere.SetRadius(radius)
@@ -27,8 +27,8 @@ def getSphereActor(pos, radius):
     return actor
 
 
-head = getSphereActor([-20, 0, 0], 8)
-body = getSphereActor([0, 0, 0], 10)
+head = get_sphere_actor([-20, 0, 0], 8)
+body = get_sphere_actor([0, 0, 0], 10)
 
 # Nose
 nose = vtk.vtkConeSource()
@@ -59,16 +59,16 @@ renWin.AddRenderer(renderer)
 renWin.SetSize(600, 600)
 
 
-def displayLoop(rangeEnd, displayFunc, value):
-    for i in range(0, rangeEnd):
+def display_loop(range_end, display_func, value):
+    for i in range(0, range_end):
         time.sleep(0.03)
 
         renWin.Render()
-        displayFunc(value)
+        display_func(value)
 
 
 # Align the head with the body
-displayLoop(180, head.RotateZ, -0.5)
+display_loop(180, head.RotateZ, -0.5)
 
 
 # Put the head on the body
@@ -77,11 +77,11 @@ def lower_head(delta):
     head.SetPosition(position[0], position[1] - delta, position[2])
 
 
-displayLoop(30, lower_head, 0.1)
+display_loop(30, lower_head, 0.1)
 
 # TODO: Align the nose with the body
 # FIXME: Edit range, the nose disapear in front of camera
-displayLoop(1000, noseActor.RotateY, -0.5)
+display_loop(1000, noseActor.RotateY, -0.5)
 
 # TODO: The nose should be inside the head
 for i in range(0, 180):
@@ -104,10 +104,10 @@ for i in range(0, 180):
 #     noseActor.SetPosition(position[0], position[1], position[2]+1)
 
 # Eyes
-leftEye = getSphereActor([-2, 18, 7], 1.5)
+leftEye = get_sphere_actor([-2, 18, 7], 1.5)
 leftEye.GetProperty().SetColor(0, 0, 0)
 
-rightEye = getSphereActor([2, 18, 7], 1.5)
+rightEye = get_sphere_actor([2, 18, 7], 1.5)
 rightEye.GetProperty().SetColor(0, 0, 0)
 
 renderer.AddActor(leftEye)
@@ -115,13 +115,13 @@ renderer.AddActor(rightEye)
 renWin.Render()
 
 # Roll the camera
-displayLoop(360, renderer.GetActiveCamera().Roll, 1)
+display_loop(360, renderer.GetActiveCamera().Roll, 1)
 
 # Traveling around the snowman
-displayLoop(360, renderer.GetActiveCamera().Azimuth, 1)
+display_loop(360, renderer.GetActiveCamera().Azimuth, 1)
 
 # Lift the camera to see the snowman from above
-displayLoop(80, renderer.GetActiveCamera().Elevation, 1)
+display_loop(80, renderer.GetActiveCamera().Elevation, 1)
 
 # Lower the camera to have the snowman in front of the camera
-displayLoop(80, renderer.GetActiveCamera().Elevation, -1)
+display_loop(80, renderer.GetActiveCamera().Elevation, -1)
