@@ -18,8 +18,8 @@ def get_sphere_actor(pos, radius):
     sphere = vtk.vtkSphereSource()
     sphere.SetCenter(pos)
     sphere.SetRadius(radius)
-    sphere.SetPhiResolution(50)
-    sphere.SetThetaResolution(50)  # TODO: Different resolutions for different sizes
+    sphere.SetPhiResolution(int(radius)*15)
+    sphere.SetThetaResolution(int(radius)*15)
 
     mapper = vtk.vtkPolyDataMapper()
     mapper.SetInputConnection(sphere.GetOutputPort())
@@ -63,11 +63,17 @@ def change_actor_y(actor, delta):
     actor.SetPosition(position[0], position[1] + delta, position[2])
 
 
-def raise_and_rotate_x(actor, delta_y, delta_rotate):
-    """Moves an actor up or down by delta and rotates it on the pitch axis"""
-    change_actor_y(actor, delta_y)
-    actor.RotateX(delta_rotate)
+def change_actor_z(actor, delta):
+    """Brings an actor closer or farther by delta"""
+    position = actor.GetPosition()
+    actor.SetPosition(position[0], position[1], position[2] + delta)
 
+
+# TODO: Check if unused and remove it
+# def raise_and_rotate_x(actor, delta_y, delta_rotate):
+#     """Moves an actor up or down by delta and rotates it on the pitch axis"""
+#     change_actor_y(actor, delta_y)
+#     actor.RotateX(delta_rotate)
 
 # Main instructions
 if __name__ == '__main__':
@@ -106,18 +112,15 @@ if __name__ == '__main__':
     # Align the nose with the body
     display_loop(180, nose.RotateY, -0.5)
 
-    # TODO: The nose should be inside the head
-    display_loop(120, lambda delta: raise_and_rotate_x(nose, delta, -0.4), 0.1)
+    # TODO : Nose is weird :(
+    # Bring the nose closer to the body
+    display_loop(180, lambda delta: change_actor_z(nose, delta), -0.1)
 
-    # FIXME: edit interval and increment
+    # Lift the nose to put it inside the head
+    display_loop(180, nose.RotateZ, 0.2)
+
     # Pull out the nose
-    # for i in range(0, 30):
-    #     time.sleep(0.03)
-    #
-    #     renWin.Render()
-    #
-    #     position = noseActor.GetPosition()
-    #     noseActor.SetPosition(position[0], position[1], position[2]+1)
+    display_loop(40, lambda delta: change_actor_z(nose, delta), 0.1)
 
     # Eyes
     leftEye = get_sphere_actor([-2, 18, 7], 1.5)
