@@ -80,7 +80,7 @@ if __name__ == '__main__':
     head = get_sphere_actor([-20, 0, 0], radius=8)
     body = get_sphere_actor([0, 0, 0], radius=10)
 
-    nose = get_cone_actor((28, 0, 0), height=3.0, radius=1.0)
+    nose = get_cone_actor((15, 0, 0), height=3.0, radius=1.0)
     nose.GetProperty().SetColor(0.925, 0.65, 0)
 
     # Camera
@@ -114,13 +114,13 @@ if __name__ == '__main__':
 
     # TODO : Nose is weird :(
     # Bring the nose closer to the body
-    display_loop(180, lambda delta: change_actor_z(nose, delta), -0.1)
+    # display_loop(90, lambda delta: change_actor_z(nose, delta), -0.2)
 
     # Lift the nose to put it inside the head
-    display_loop(180, nose.RotateZ, 0.2)
+    display_loop(210, nose.RotateZ, 0.4)
 
     # Pull out the nose
-    display_loop(40, lambda delta: change_actor_z(nose, delta), 0.1)
+    display_loop(70, lambda delta: change_actor_z(nose, delta), 0.1)
 
     # Eyes
     leftEye = get_sphere_actor([-2, 18, 7], 1.5)
