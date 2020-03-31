@@ -18,8 +18,8 @@ def get_sphere_actor(pos, radius):
     sphere = vtk.vtkSphereSource()
     sphere.SetCenter(pos)
     sphere.SetRadius(radius)
-    sphere.SetPhiResolution(int(radius)*15)
-    sphere.SetThetaResolution(int(radius)*15)
+    sphere.SetPhiResolution(int(radius) * 15)
+    sphere.SetThetaResolution(int(radius) * 15)
 
     mapper = vtk.vtkPolyDataMapper()
     mapper.SetInputConnection(sphere.GetOutputPort())
@@ -69,12 +69,6 @@ def change_actor_z(actor, delta):
     actor.SetPosition(position[0], position[1], position[2] + delta)
 
 
-# TODO: Check if unused and remove it
-# def raise_and_rotate_x(actor, delta_y, delta_rotate):
-#     """Moves an actor up or down by delta and rotates it on the pitch axis"""
-#     change_actor_y(actor, delta_y)
-#     actor.RotateX(delta_rotate)
-
 # Main instructions
 if __name__ == '__main__':
     head = get_sphere_actor([-20, 0, 0], radius=8)
@@ -111,10 +105,6 @@ if __name__ == '__main__':
 
     # Align the nose with the body
     display_loop(180, nose.RotateY, -0.5)
-
-    # TODO : Nose is weird :(
-    # Bring the nose closer to the body
-    # display_loop(90, lambda delta: change_actor_z(nose, delta), -0.2)
 
     # Lift the nose to put it inside the head
     display_loop(210, nose.RotateZ, 0.4)
