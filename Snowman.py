@@ -7,7 +7,7 @@ Python version: 3.7.4
 """
 
 import vtk
-import time
+from time import sleep
 
 # The time a frame stays on screen (seconds)
 FRAME_TIME = 0.01
@@ -52,7 +52,7 @@ def get_cone_actor(center_position, height, radius):
 def display_loop(range_end, display_func, value):
     """Executes a given display action for the given amount of frames"""
     for _ in range(range_end):
-        time.sleep(FRAME_TIME)
+        sleep(FRAME_TIME)
 
         renWin.Render()
         display_func(value)
@@ -131,7 +131,7 @@ if __name__ == '__main__':
     display_loop(360, renderer.GetActiveCamera().Azimuth, 1)
 
     # Lift the camera to see the snowman from above
-    display_loop(80, renderer.GetActiveCamera().Elevation, 1)
+    display_loop(90, renderer.GetActiveCamera().Elevation, 1)
 
     # Lower the camera to have the snowman in front of the camera
-    display_loop(80, renderer.GetActiveCamera().Elevation, -1)
+    display_loop(90, renderer.GetActiveCamera().Elevation, -1)
