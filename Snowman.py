@@ -131,7 +131,7 @@ if __name__ == '__main__':
     display_loop(360, renderer.GetActiveCamera().Azimuth, 1)
 
     # Lift the camera to see the snowman from above
-    display_loop(90, renderer.GetActiveCamera().Elevation, 1)
+    display_loop(80, renderer.GetActiveCamera().Elevation, 1)
 
     # Lower the camera to have the snowman in front of the camera
-    display_loop(90, renderer.GetActiveCamera().Elevation, -1)
+    display_loop(80, renderer.GetActiveCamera().Elevation, -1)
