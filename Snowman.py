@@ -9,6 +9,7 @@ Python version: 3.7.4
 import vtk
 import time
 
+# The time a frame stays on screen (seconds)
 FRAME_TIME = 0.01
 
 
@@ -37,7 +38,7 @@ def get_cone_actor(center_position, height, radius):
     cone.SetCenter(center_position)
     cone.SetHeight(height)
     cone.SetRadius(radius)
-    cone.SetResolution(50)
+    cone.SetResolution(30)
 
     mapper = vtk.vtkPolyDataMapper()
     mapper.SetInputConnection(cone.GetOutputPort())
