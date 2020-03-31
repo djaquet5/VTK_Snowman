@@ -10,7 +10,7 @@ import vtk
 from time import sleep
 
 # The time a frame stays on screen (seconds)
-FRAME_TIME = 0.01
+FRAMERATE = 0.01
 
 
 # Generate an actor with a sphere shape
@@ -49,38 +49,31 @@ def get_cone_actor(center_position, height, radius):
     return actor
 
 
-def display_loop(range_end, display_func, value):
+def display_loop(range_end, delta, display_func):
     """Executes a given display action for the given amount of frames"""
     for _ in range(range_end):
-        sleep(FRAME_TIME)
+        sleep(FRAMERATE)
 
-        renWin.Render()
-        display_func(value)
-
-
-def change_actor_y(actor, delta):
-    """Moves an actor up or down by delta"""
-    position = actor.GetPosition()
-    actor.SetPosition(position[0], position[1] + delta, position[2])
-
-
-def change_actor_z(actor, delta):
-    """Brings an actor closer or farther by delta"""
-    position = actor.GetPosition()
-    actor.SetPosition(position[0], position[1], position[2] + delta)
+        ren_win.Render()
+        display_func(delta)
 
 
 # Main instructions
 if __name__ == '__main__':
-    head = get_sphere_actor([-20, 0, 0], radius=8)
-    body = get_sphere_actor([0, 0, 0], radius=10)
+    head = get_sphere_actor((-20, 0, 0), radius=8)
+    body = get_sphere_actor((0, 0, 0), radius=10)
 
-    nose = get_cone_actor((15, 0, 0), height=3.0, radius=1.0)
+    nose = get_cone_actor((30, 0, 0), height=3.0, radius=1.0)
     nose.GetProperty().SetColor(0.925, 0.65, 0)
+
+    # Set the nose's transform
+    transform = vtk.vtkTransform()
+    transform.PostMultiply()
+    nose.SetUserTransform(transform)
 
     # Camera
     camera = vtk.vtkCamera()
-    camera.SetPosition(0, 0, 120)
+    camera.SetPosition(0, 0, 130)
     camera.SetFocalPoint(0, 0, 0)
 
     # Renderer
@@ -94,24 +87,27 @@ if __name__ == '__main__':
     # Color picked from the demo video
     renderer.SetBackground(1, 0.894, 0.898)
 
-    renWin = vtk.vtkRenderWindow()
-    renWin.AddRenderer(renderer)
-    renWin.SetSize(600, 600)
+    ren_win = vtk.vtkRenderWindow()
+    ren_win.AddRenderer(renderer)
+    ren_win.SetSize(600, 600)
 
     # Align the head with the body
-    display_loop(180, head.RotateZ, -0.5)
+    display_loop(180, -0.5, head.RotateZ)
 
     # Lower the head onto the body
-    display_loop(30, lambda delta: change_actor_y(head, delta), -0.1)
+    display_loop(30, -0.1, lambda delta: head.AddPosition(0, delta, 0))
 
     # Align the nose with the body
-    display_loop(180, nose.RotateY, -0.5)
+    display_loop(180, -0.5, nose.RotateY)
+
+    # Move the nose closer to the body
+    display_loop(140, -0.1, lambda delta: transform.Translate(0, 0, delta))
 
     # Lift the nose to put it inside the head
-    display_loop(210, nose.RotateZ, 0.4)
+    display_loop(90, -1, transform.RotateX)
 
     # Pull out the nose
-    display_loop(70, lambda delta: change_actor_z(nose, delta), 0.1)
+    display_loop(90, 0.1, lambda delta: transform.Translate(0, 0, delta))
 
     # Eyes
     leftEye = get_sphere_actor([-2, 18, 7], 1.5)
@@ -122,16 +118,18 @@ if __name__ == '__main__':
 
     renderer.AddActor(leftEye)
     renderer.AddActor(rightEye)
-    renWin.Render()
+    ren_win.Render()
 
     # Roll the camera
-    display_loop(360, renderer.GetActiveCamera().Roll, 1)
+    display_loop(360, 1, renderer.GetActiveCamera().Roll)
 
     # Traveling around the snowman
-    display_loop(360, renderer.GetActiveCamera().Azimuth, 1)
+    display_loop(360, 1, renderer.GetActiveCamera().Azimuth)
 
     # Lift the camera to see the snowman from above
-    display_loop(80, renderer.GetActiveCamera().Elevation, 1)
+    display_loop(80, 1, renderer.GetActiveCamera().Elevation)
 
     # Lower the camera to have the snowman in front of the camera
-    display_loop(80, renderer.GetActiveCamera().Elevation, -1)
+    display_loop(80, -1, renderer.GetActiveCamera().Elevation)
+
+    sleep(2)
