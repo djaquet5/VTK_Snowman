@@ -98,7 +98,7 @@ if __name__ == '__main__':
     display_loop(30, -0.1, lambda delta: head.AddPosition(0, delta, 0))
 
     # Align the nose with the body
-    display_loop(180, -0.5, nose.RotateY)
+    display_loop(180, -0.5, transform.RotateY)
 
     # Move the nose closer to the body
     display_loop(140, -0.1, lambda delta: transform.Translate(0, 0, delta))
